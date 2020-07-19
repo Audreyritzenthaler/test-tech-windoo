@@ -1,9 +1,8 @@
-const connection = require('./config/database')
 const routes = require('./routes/index')
+const express = require('express')
 const app = express()
 const cors = require('cors')
-
-connection.connect()
+const port = 8000
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -12,13 +11,13 @@ app.use(cors())
 app.use('/api/ideas', routes.ideas)
 
 app.get('/', (req, res) => {
-  res.send({ message: 'YESS successfully connected!' })
+  res.send({ message: 'YES successfully connected!' })
 })
 
-app.listen(process.env.PORT, error => {
+app.listen(port, error => {
   if (error) {
     console.log('Something bad happened...', error)
   } else {
-    console.log(`server is listening on port ${process.env.PORT}`)
+    console.log(`server is listening on port ${port}`)
   }
 })
