@@ -5,37 +5,57 @@ import Idea from "./Idea"
 const Ideas = () => {
   const [ideas, setIdeas] = useState([])
   const [loaded, setLoaded] = useState(false)
-  // console.log(ideas)
-      
-    useEffect(() => {
-      const fetchData = async () => {
-        const result = await axios(
-          'http://localhost:8000/api/ideas'
-          );
-          setIdeas(result.data)
-          setLoaded(true)
-      }
-      fetchData()
-    }, [])
+  const [query, setQuery] = useState('')
+  
+const ascFilter = () => {
+    const asc = [...ideas]
     
-    return(
-      <div className="main">
-        {
-          loaded ? 
-          <ul>
-              {
-                  ideas.map((idea, i) => 
-                      <li key={i}>
-                          <Idea title={idea.title} author={idea.author} date={idea.createdAt} score={idea.score} />
-                      </li>
-                  )
-              }
-          </ul>
-          : <p>Loading</p>
+    asc.sort((a, b) => a.score - b.score)
+    setIdeas(asc)
+}
+
+const descFilter = () => {
+    const desc = [...ideas]
+    
+    desc.sort((a, b) => b.score - a.score)
+    setIdeas(desc)
+}
+      
+  useEffect(() => {
+    const fetchData = () => {
+      axios.get(
+        'http://localhost:8000/api/ideas'
+        ).then(res => {
+          console.log(res.data)
+          setIdeas(res.data)
+          setLoaded(true)
         }
-        
-      </div>
-    )
+        )
+    }
+    fetchData()
+  }, [])
+  
+  return(
+    <div className="main">
+      <button onClick={() => ascFilter()}>ASC</button>
+      <button onClick={() => descFilter()}>DESC</button>
+      <input onChange={(e) => setQuery(e.target.value)}/>
+      {
+        loaded ? 
+        <ul>
+            {
+                ideas.map((idea, i) => 
+                    <li key={i}>
+                        <Idea title={idea.title} author={idea.author} date={idea.createdAt} score={idea.score} />
+                    </li>
+                )
+            }
+        </ul>
+        : <p>Loading</p>
+      }
+      <button onClick={ascFilter}>ASC</button>
+    </div>
+  )
 }
 
 export default Ideas
