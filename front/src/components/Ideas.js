@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
 import axios from 'axios'
 import Idea from "./Idea"
+import './Ideas.css'
 
 const Ideas = () => {
   const [ideas, setIdeas] = useState([])
   const [loaded, setLoaded] = useState(false)
   const [query, setQuery] = useState('')
+  const [filteredIdeas, setFilteredIdeas] = useState([])
   const [sortScore, setSortScore] = useState(false)
   const [sortDate, setSortDate] = useState(false)
 
@@ -36,12 +38,12 @@ const Ideas = () => {
   }
     
   useEffect(() => {
-    setIdeas(
+    setFilteredIdeas(
       ideas.filter( idea => {
         return idea.title.toLowerCase().includes(query.toLowerCase())  
       })
     )
-  }, [query])
+  }, [query, ideas])
 
   useEffect(() => {
     const fetchData = () => {
@@ -61,18 +63,18 @@ const Ideas = () => {
   return(
     <div className="main">
       <div className="filter">
-        <button onClick={() => filterDate()}>Filtrer les dates {sortDate ? <i class="fas fa-arrow-up"></i> : <i class="fas fa-arrow-down"></i>}</button>
-        <button onClick={() => filterScore()}>Filtrer les scores {sortScore ? <i class="fas fa-arrow-up"></i> : <i class="fas fa-arrow-down"></i>}</button>
-        <input type='text' placeholder="Rechercher une idée..." onChange={(e) => setQuery(e.target.value)}/>
+        <button className="myButton" onClick={() => filterDate()}>Filtrer les dates {sortDate ? <i class="fas fa-arrow-up"></i> : <i class="fas fa-arrow-down"></i>}</button>
+        <button className="myButton" onClick={() => filterScore()}>Filtrer les scores {sortScore ? <i class="fas fa-arrow-up"></i> : <i class="fas fa-arrow-down"></i>}</button>
+        <input className="search" type='text' placeholder="Rechercher une idée..." onChange={(e) => setQuery(e.target.value)}/>
       </div>
       <div>
-          { ideas.length === 0 ? "Cette idée n'existe pas !" : "" }
+          { filteredIdeas.length === 0 ? <p className="existe">Cette idée n'existe pas !</p> : "" }
       </div>
       {
         loaded ? 
         <ul>
             {
-                ideas.map((idea, i) => 
+                filteredIdeas.map((idea, i) => 
                     <li key={i}>
                         <Idea id={idea.id} title={idea.title} author={idea.author} date={idea.createdAt.replace('T', ' ').substr(0, 19).split(' ').join(' à ')} score={idea.score} />
                     </li>
