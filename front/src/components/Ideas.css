@@ -1,0 +1,43 @@
+.myButton {
+	box-shadow: 0px 2px 5px grey;
+	background:linear-gradient(to bottom, #07A3B2 5%, #69cddf 100%);
+	border: none;
+	border-radius:8px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:16px;
+	font-weight:bold;
+	padding:8px 25px;
+	text-decoration:none;
+	/* text-shadow:0px 1px 0px #3d768a; */
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	background-color:#408c99;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+.existe {
+	background: linear-gradient(to bottom right, #07A3B2, #D9ECC7);
+    color: rgb(255, 255, 255);
+    border-radius: 8px;
+    padding: 1em;
+	text-align: center;
+	width: 20%;
+    margin: auto;
+    box-shadow: 0px 5px 11px -7px rgba(0, 0, 0, 0.616);
+}
+
+.search {
+	border: 1px solid #07A3B2;
+	border-radius: 8px;
+	text-indent: 10px;
+}
+
+::placeholder {
+	color: grey;
+  }
