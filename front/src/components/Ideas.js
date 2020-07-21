@@ -60,16 +60,21 @@ const Ideas = () => {
   
   return(
     <div className="main">
-      <button onClick={() => filterDate()}>Date {sortDate ? 'ASC' : 'DESC'}</button>
-      <button onClick={() => filterScore()}>Score {sortScore ? 'ASC' : 'DESC'}</button>
-      <input type='text' placeholder="search idea" onChange={(e) => setQuery(e.target.value)}/>
+      <div className="filter">
+        <button onClick={() => filterDate()}>Filtrer les dates {sortDate ? <i class="fas fa-arrow-up"></i> : <i class="fas fa-arrow-down"></i>}</button>
+        <button onClick={() => filterScore()}>Filtrer les scores {sortScore ? <i class="fas fa-arrow-up"></i> : <i class="fas fa-arrow-down"></i>}</button>
+        <input type='text' placeholder="Rechercher une idée..." onChange={(e) => setQuery(e.target.value)}/>
+      </div>
+      <div>
+          { ideas.length === 0 ? "Cette idée n'existe pas !" : "" }
+      </div>
       {
         loaded ? 
         <ul>
             {
                 ideas.map((idea, i) => 
                     <li key={i}>
-                        <Idea title={idea.title} author={idea.author} date={idea.createdAt.replace('T', ' ').substr(0, 19).split(' ').join(' à ')} score={idea.score} />
+                        <Idea id={idea.id} title={idea.title} author={idea.author} date={idea.createdAt.replace('T', ' ').substr(0, 19).split(' ').join(' à ')} score={idea.score} />
                     </li>
                 )
             }

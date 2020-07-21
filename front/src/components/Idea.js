@@ -1,11 +1,11 @@
 import React from 'react'
+import './Idea.css'
 
 const Idea = (props) => {
     return(
         <div>
-            {/* <p>{props.id}</p> */}
+            <p>Idée n°{props.id} proposée par {props.author}</p>
             <p>{props.title}</p>
-            <p>Submited by {props.author}</p>
             <p>{props.date}</p>
             <p>Score : {props.score} / 50</p>
         </div>

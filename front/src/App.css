@@ -1,5 +1,14 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .App {
   text-align: center;
+}
+
+h1 {
+  margin: 1.5em auto;
 }
 
 li {
@@ -9,6 +18,13 @@ li {
   margin: 3em auto;
   padding: 1.5em;
   border-radius: 8px;
-  background-color: rgb(67, 95, 119);
+  background-color: rgba(67, 95, 119, 0.658);
   color: aliceblue;
+}
+
+.filter {
+  width: 40%;
+  margin: 2em auto;
+  display: flex;
+  justify-content: space-between;
 }
