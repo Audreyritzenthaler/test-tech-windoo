@@ -6,54 +6,76 @@ const Ideas = () => {
   const [ideas, setIdeas] = useState([])
   const [loaded, setLoaded] = useState(false)
   const [query, setQuery] = useState('')
-  
-const ascFilter = () => {
-    const asc = [...ideas]
-    
-    asc.sort((a, b) => a.score - b.score)
-    setIdeas(asc)
-}
+  const [sortScore, setSortScore] = useState(false)
+  const [sortDate, setSortDate] = useState(false)
 
-const descFilter = () => {
-    const desc = [...ideas]
+  const filterScore = () => {
+      const tmp = [...ideas].sort((a, b) => {
+        setSortScore(!sortScore)
+        if (sortScore) {
+          return a.score - b.score
+        }
+        return b.score - a.score
+      })
+      setIdeas(tmp)
+  }
+
+  const filterDate = () => {
+      const tmp = [...ideas].sort((a, b) => {
+        setSortDate(!sortDate)
+        if (sortDate) {
+          if(a.createdAt < b.createdAt) return 1
+          if(a.createdAt > b.createdAt) return -1
+          return 0
+        }
+        if(a.createdAt > b.createdAt) return 1
+        if(a.createdAt < b.createdAt) return -1
+        return 0
+    })
+      setIdeas(tmp)
+  }
     
-    desc.sort((a, b) => b.score - a.score)
-    setIdeas(desc)
-}
-      
+  useEffect(() => {
+    setIdeas(
+      ideas.filter( idea => {
+        return idea.title.toLowerCase().includes(query.toLowerCase())  
+      })
+    )
+  }, [query])
+
   useEffect(() => {
     const fetchData = () => {
       axios.get(
         'http://localhost:8000/api/ideas'
         ).then(res => {
-          console.log(res.data)
           setIdeas(res.data)
           setLoaded(true)
-        }
-        )
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
     fetchData()
   }, [])
   
   return(
     <div className="main">
-      <button onClick={() => ascFilter()}>ASC</button>
-      <button onClick={() => descFilter()}>DESC</button>
-      <input onChange={(e) => setQuery(e.target.value)}/>
+      <button onClick={() => filterDate()}>Date {sortDate ? 'ASC' : 'DESC'}</button>
+      <button onClick={() => filterScore()}>Score {sortScore ? 'ASC' : 'DESC'}</button>
+      <input type='text' placeholder="search idea" onChange={(e) => setQuery(e.target.value)}/>
       {
         loaded ? 
         <ul>
             {
                 ideas.map((idea, i) => 
                     <li key={i}>
-                        <Idea title={idea.title} author={idea.author} date={idea.createdAt} score={idea.score} />
+                        <Idea title={idea.title} author={idea.author} date={idea.createdAt.replace('T', ' ').substr(0, 19).split(' ').join(' à ')} score={idea.score} />
                     </li>
                 )
             }
         </ul>
         : <p>Loading</p>
       }
-      <button onClick={ascFilter}>ASC</button>
     </div>
   )
 }

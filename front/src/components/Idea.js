@@ -5,9 +5,9 @@ const Idea = (props) => {
         <div>
             {/* <p>{props.id}</p> */}
             <p>{props.title}</p>
-            <p>{props.author}</p>
+            <p>Submited by {props.author}</p>
             <p>{props.date}</p>
-            <p>Score : {props.score}</p>
+            <p>Score : {props.score} / 50</p>
         </div>
     )
 }
